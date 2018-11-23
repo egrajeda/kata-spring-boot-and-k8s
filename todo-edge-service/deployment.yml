@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-edge-service
+  labels:
+    app: todo-edge-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: todo-edge-service
+      labels:
+        app: todo-edge-service
+    spec:
+      containers:
+        - name: todo-edge-service
+          image: egrajeda/todo-edge-service:0.0.1-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http-port
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http-port
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http-port
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: todo-edge-service
