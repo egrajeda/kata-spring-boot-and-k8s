@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-service
+  labels:
+    app: todo-service
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: todo-service
+      labels:
+        app: todo-service
+    spec:
+      containers:
+        - name: todo-service
+          image: egrajeda/todo-service:0.0.1-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http-port
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http-port
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http-port
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: todo-service
