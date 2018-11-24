@@ -15,36 +15,36 @@ import java.util.Collection;
 @SpringBootApplication
 public class TodoEdgeServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TodoEdgeServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TodoEdgeServiceApplication.class, args);
+    }
 }
 
 @Data
 class Todo {
 
-	private String title;
+    private String title;
 }
 
-@FeignClient("todo-service")
+@FeignClient(name = "todo-service")
 interface TodoClient {
 
-	@GetMapping("/todos")
-	Resources<Todo> readTodos();
+    @GetMapping("/todos")
+    Resources<Todo> readTodos();
 }
 
 @RestController
 class TodoApiAdapterRestController {
 
-	private final TodoClient todoClient;
+    private final TodoClient todoClient;
 
-	TodoApiAdapterRestController(TodoClient todoClient) {
-		this.todoClient = todoClient;
-	}
+    TodoApiAdapterRestController(TodoClient todoClient) {
+        this.todoClient = todoClient;
+    }
 
-	@GetMapping("/todos")
-	public Collection<Todo> todos() {
-		return todoClient.readTodos()
-				.getContent();
-	}
+    @GetMapping("/todos")
+    public Collection<Todo> todos() {
+        return todoClient.readTodos()
+                .getContent();
+    }
 }
