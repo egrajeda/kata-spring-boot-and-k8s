@@ -15,7 +15,7 @@ spec:
       containers:
         - name: todo-service
           image: egrajeda/todo-service:0.0.1-SNAPSHOT
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - name: http-port
               containerPort: 8080
